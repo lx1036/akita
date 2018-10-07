@@ -10,11 +10,12 @@ import {
 import { BrowserModule,  } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
-import { TodosModule } from './todos/todos.module';
-import { TodosPageComponent } from './todos/todos-page.component';
+import { TodosModule } from './todos/todos-page.component';
 import { AppComponent } from './app.component';
 import {APP_BASE_HREF} from "@angular/common";
 import {akitaDevtools, DevtoolsOptions} from "@lx1036/akita";
+import {StoriesModule} from "./stories/stories.component";
+import {WidgetsModule} from "./wigets/widgets.component";
 
 
 export const DEVTOOLS_OPTIONS = new InjectionToken('DevtoolsOptions');
@@ -54,14 +55,19 @@ const routes: Routes = [
     pathMatch: 'full',
     redirectTo: 'todos'
   },
-  {
-    path: 'todos',
-    component: TodosPageComponent
-  },
 ];
 
 @NgModule({
-  imports: [BrowserModule, ReactiveFormsModule, TodosModule, RouterModule.forRoot(routes), AkitaNgDevTools.forRoot()],
+  imports: [
+    BrowserModule,
+    ReactiveFormsModule,
+    RouterModule.forRoot(routes),
+    AkitaNgDevTools.forRoot(),
+  
+    TodosModule,
+    StoriesModule,
+    WidgetsModule,
+  ],
   declarations: [AppComponent],
   providers: [
     {provide: APP_BASE_HREF, useValue: '/'}

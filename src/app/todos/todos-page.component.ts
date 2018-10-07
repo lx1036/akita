@@ -1,10 +1,14 @@
-import { Component, OnInit, Injectable, 
-ChangeDetectionStrategy, OnDestroy, Input,Output, EventEmitter } from '@angular/core';
-import {FormControl} from '@angular/forms';
+import {
+  Component, OnInit, Injectable,
+  ChangeDetectionStrategy, OnDestroy, Input, Output, EventEmitter, NgModule
+} from '@angular/core';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {combineLatest, Observable } from 'rxjs';
 import {ID, guid, QueryEntity, StoreConfig, EntityStore, EntityState } from '@lx1036/akita';
 import { map } from 'rxjs/operators';
 import {untilDestroyed} from "../utils/rxjs_pipes";
+import {RouterModule, Routes} from "@angular/router";
+import {CommonModule} from "@angular/common";
 
 
 export type Todo = {
@@ -92,11 +96,7 @@ export class TodosService {
   constructor(private todosStore: TodosStore) { }
 
   updateFilter(filter: VISIBILITY_FILTER) {
-    this.todosStore.updateRoot({
-      ui: {
-        filter
-      }
-    });
+    this.todosStore.updateRoot({ui: { filter }});
   }
   
   complete({ id, completed }: Todo) {
@@ -251,3 +251,27 @@ export class TodosPageComponent implements OnInit {
     this.todosService.updateFilter(filter);
   }
 }
+
+
+const routes: Routes = [
+  {
+    path: 'todos',
+    component: TodosPageComponent,
+  },
+];
+
+@NgModule({
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule.forChild(routes),
+  ],
+  exports: [],
+  declarations: [
+    TodoComponent,
+    TodosComponent,
+    TodosFiltersComponent,
+    TodosPageComponent,
+  ]
+})
+export class TodosModule {}
